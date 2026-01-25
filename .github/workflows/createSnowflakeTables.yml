@@ -1,32 +1,46 @@
-name: Create Snowflake Table
+name: Snowflake Direct Deploy
 
 on:
-  workflow_dispatch:  # manual trigger
+push:
+branches: [ "main" ]
 
 jobs:
-  create-table:
-    runs-on: ubuntu-latest
+snowflake-task:
+runs-on: ubuntu-latest
 
-    steps:
-    - name: Install SnowSQL
-      run: |
-        curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.26-linux_x86_64.bash
-        bash snowsql-1.2.26-linux_x86_64.bash
-        export PATH=$PATH:$HOME/.snowsql/bin
+# Ensure these are set in Settings > Secrets and variables > Actions
+env:
+SN_USER: ${{ secrets.SNOWFLAKE_USER }}
+SN_PASS: ${{ secrets.SNOWFLAKE_PASSWORD }}
+SN_ACCT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
 
-    - name: Create Table in Snowflake
-      env:
-        SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
-        SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
-        SNOWSQL_PASSWORD: ${{ secrets.SNOWSQL_PASSWORD }}
-        SNOWSQL_WAREHOUSE: ${{ secrets.SNOWSQL_WAREHOUSE }}
-        SNOWSQL_DATABASE: ${{ secrets.SNOWSQL_DATABASE }}
-        SNOWSQL_SCHEMA: ${{ secrets.SNOWSQL_SCHEMA }}
-      run: |
-        snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER -w $SNOWSQL_WAREHOUSE -d $SNOWSQL_DATABASE -s $SNOWSQL_SCHEMA -q "
-          CREATE TABLE IF NOT EXISTS my_table (
-            id INT,
-            name STRING,
-            created_at TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP
-          );
-        "
+steps:
+- name: Setup Python
+uses: actions/setup-python@v4
+with:
+python-version: '3.9'
+
+- name: Install Connector
+run: pip install snowflake-connector-python
+
+- name: Run Inline Python Script
+shell: python
+run: |
+import snowflake.connector
+import os
+
+# Connect using environment variables
+conn = snowflake.connector.connect(
+user=os.getenv('SN_USER'),
+password=os.getenv('SN_PASS'),
+account=os.getenv('SN_ACCT'),
+warehouse='COMPUTE_WH', # Replace with your WH
+database='DEMO_DB', # Replace with your DB
+schema='PUBLIC' # Replace with your Schema
+)
+
+try:
+conn.cursor().execute("CREATE TABLE IF NOT EXISTS SIMPLE_TABLE (COL1 STRING)")
+print("Success: Table created.")
+finally:
+conn.close()
