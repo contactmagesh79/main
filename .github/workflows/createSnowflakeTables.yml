@@ -15,7 +15,7 @@ jobs:
     #  SN_ACCT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
     env:
       SN_USER: UMAN
-      SN_PASS: Ashvath08$
+      SN_PASS: Ashvath08$GGeethA86$
       SN_ACCT: LUQLQVO-ZC82696
       
 
@@ -40,7 +40,7 @@ jobs:
               password=os.getenv('SN_PASS'),
               account=os.getenv('SN_ACCT'),
               warehouse='COMPUTE_WH',  # Replace with your WH
-              database='DEMO_DB',      # Replace with your DB
+              database='SNOWFLAKE_LEARNING_DB',      # Replace with your DB
               schema='PUBLIC'          # Replace with your Schema
           )
 
