@@ -1,4 +1,4 @@
-name: Snowflake Direct Deploy
+name: createSnowflakeTables
 
 on:
 push:
