@@ -1,0 +1,32 @@
+name: Create Snowflake Table
+
+on:
+  workflow_dispatch:  # manual trigger
+
+jobs:
+  create-table:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install SnowSQL
+      run: |
+        curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.26-linux_x86_64.bash
+        bash snowsql-1.2.26-linux_x86_64.bash
+        export PATH=$PATH:$HOME/.snowsql/bin
+
+    - name: Create Table in Snowflake
+      env:
+        SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
+        SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+        SNOWSQL_PASSWORD: ${{ secrets.SNOWSQL_PASSWORD }}
+        SNOWSQL_WAREHOUSE: ${{ secrets.SNOWSQL_WAREHOUSE }}
+        SNOWSQL_DATABASE: ${{ secrets.SNOWSQL_DATABASE }}
+        SNOWSQL_SCHEMA: ${{ secrets.SNOWSQL_SCHEMA }}
+      run: |
+        snowsql -a $SNOWSQL_ACCOUNT -u $SNOWSQL_USER -w $SNOWSQL_WAREHOUSE -d $SNOWSQL_DATABASE -s $SNOWSQL_SCHEMA -q "
+          CREATE TABLE IF NOT EXISTS my_table (
+            id INT,
+            name STRING,
+            created_at TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP
+          );
+        "
