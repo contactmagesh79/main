@@ -9,10 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     # Ensure these are set in Settings > Secrets and variables > Actions
+    #env:
+    #  SN_USER: ${{ secrets.SNOWFLAKE_USER }}
+    #  SN_PASS: ${{ secrets.SNOWFLAKE_PASSWORD }}
+    #  SN_ACCT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
     env:
-      SN_USER: ${{ secrets.SNOWFLAKE_USER }}
-      SN_PASS: ${{ secrets.SNOWFLAKE_PASSWORD }}
-      SN_ACCT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SN_USER: UMAN
+      SN_PASS: Ashvath08$
+      SN_ACCT: LUQLQVO-ZC82696
+      
 
     steps:
       - name: Setup Python
