@@ -10,7 +10,7 @@ jobs:
 
     env:
       SN_USER: UMAN
-      SN_PASS: Ashvath08$GGeethA86$
+      SN_PASS: GGeethA86$Ashvath08$
       SN_ACCT: YFTGKVW-HE21527
 
     steps:
