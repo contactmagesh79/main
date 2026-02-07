@@ -8,16 +8,10 @@ jobs:
   snowflake-task:
     runs-on: ubuntu-latest
 
-    # Ensure these are set in Settings > Secrets and variables > Actions
-    #env:
-    #  SN_USER: ${{ secrets.SNOWFLAKE_USER }}
-    #  SN_PASS: ${{ secrets.SNOWFLAKE_PASSWORD }}
-    #  SN_ACCT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
     env:
       SN_USER: UMAN
       SN_PASS: Ashvath08$GGeethA86$
       SN_ACCT: YFTGKVW-HE21527
-      
 
     steps:
       - name: Setup Python
@@ -40,13 +34,19 @@ jobs:
               password=os.getenv('SN_PASS'),
               account=os.getenv('SN_ACCT'),
               warehouse='COMPUTE_WH',  # Replace with your WH
-              database='SNOWFLAKE_LEARNING_DB',      # Replace with your DB
-              schema='PUBLIC'          # Replace with your Schema
+              database='SNOWFLAKE_LEARNING_DB',  # Replace with your DB
+              schema='PUBLIC'  # Replace with your Schema
           )
 
           try:
-              conn.cursor().execute("CREATE TABLE IF NOT EXISTS CANDIDATE (EMPID VARCHAR, EMPNAME VARCHAR,
-              EMPLOCATION VARCHAR)")
+              sql = """
+              CREATE TABLE IF NOT EXISTS CANDIDATE (
+                  EMPID VARCHAR,
+                  EMPNAME VARCHAR,
+                  EMPLOCATION VARCHAR
+              )
+              """
+              conn.cursor().execute(sql)
               print("Success: Table created.")
           finally:
               conn.close()
