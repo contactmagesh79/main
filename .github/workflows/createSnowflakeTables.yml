@@ -16,7 +16,7 @@ jobs:
     env:
       SN_USER: UMAN
       SN_PASS: Ashvath08$GGeethA86$
-      SN_ACCT: LUQLQVO-ZC82696
+      SN_ACCT: YFTGKVW-HE21527
       
 
     steps:
@@ -45,7 +45,8 @@ jobs:
           )
 
           try:
-              conn.cursor().execute("CREATE TABLE IF NOT EXISTS SIMPLE_TABLE (COL1 STRING)")
+              conn.cursor().execute("CREATE TABLE IF NOT EXISTS CANDIDATE (EMPID VARCHAR, EMPNAME VARCHAR,
+              EMPLOCATION VARCHAR)")
               print("Success: Table created.")
           finally:
               conn.close()
