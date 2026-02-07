@@ -42,7 +42,7 @@ jobs:
           )
 
           try:
-              with open('create_candidate_table.sql', 'r') as file:
+              with open('createSqlPSA.sql', 'r') as file:
                   sql = file.read()
               conn.cursor().execute(sql)
               print("Success: Table created.")
