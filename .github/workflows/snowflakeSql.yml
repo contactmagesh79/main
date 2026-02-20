@@ -11,7 +11,7 @@ jobs:
     env:
       SN_USER: UMAN
       SN_PASS: GGeethA86$Ashvath08$
-      SN_ACCT: YFTGKVW-HE21527
+      SN_ACCT: ZC82696-LUQLQVO
 
     steps:
       - name: Checkout repository
